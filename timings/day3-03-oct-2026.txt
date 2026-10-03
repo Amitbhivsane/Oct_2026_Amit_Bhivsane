@@ -1,0 +1,21 @@
+some linux command practics
+
+umask
+find
+tar
+gzip
+ps
+top
+kill
+pkill
+pgrep
+whoami
+df
+du
+free uptime
+
+ipconfig
+ping
+ss
+ssh
+scp

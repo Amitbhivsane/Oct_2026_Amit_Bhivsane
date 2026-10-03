@@ -1,0 +1,64 @@
+
+name:  Install and start Nginx on Pathnex
+hosts: all
+become: yes
+
+tasks:
+    name: Install Nginx
+    yum:
+      name:  ngnix
+      state: present
+    
+     name: Enable ngnix
+     service:
+        name: ngnix
+	state: started
+        enabled: yes
+ 
+provider "aws"  {
+    region = "us-east-1"
+}
+
+resource "aws_instance" "PahnexEC2"{
+  ami    ="ami-ami-0abcd1234abcd1234"
+  instance_type ="r5.2xlarge"
+
+  tags={
+    Name   "= "Pahnex-server"
+    Environment ="Training"
+    Owner      = "PahtnexStudent"
+
+
+}
+}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: pahtnex-deployment
+   spec: 
+     replicas: 2
+     selector:
+      matchLabels:
+        app: pathnex-app
+      template:
+        metadat:
+           labels:
+             app: pathnex-app
+           spec:
+            container:
+                name: app
+                image: ngnix
+                ports:
+                   -containerPort: 80
+
+
+#!/bin/bash
+df -h
+
+docker pull ubuntu
+docker image
+ docker ps -a
+
+FROM ubutu:22.04
+RUN apt update
+CMD["echo","Hello Pahtnex"] 	          
