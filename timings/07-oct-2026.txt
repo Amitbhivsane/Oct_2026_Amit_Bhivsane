@@ -1,0 +1,9 @@
+aws services
+s3
+vpc
+landing zone
+iam
+aws cloud watch
+aws cloud trial
+Route 53 -DNS
+
