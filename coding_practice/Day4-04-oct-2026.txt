@@ -1,0 +1,104 @@
+# Jenkings file -Basic CI pipeline
+
+pipeline {
+     agent any {
+     stages {
+         stage('Build'){
+             steps {
+	         echo 'Buliding Project'
+                  }	
+               }
+               stage ('Test') {
+                   steps {
+                       echo 'Running test'
+                        } 
+                     }
+	        stage('Deploye'){
+                    steps {
+                      echo 'Deploying application'
+                         }
+                   }
+              }
+          }
+   }
+
+   	  
+stages :
+    -build
+    -test
+    -deploy
+    
+   build:
+     stage: build
+     script: 
+       echo "Building Project"
+
+
+   test:
+     stage: test
+     script:
+       echo "Running stage"
+
+   deploy
+     stage: deploy
+     script 
+       echo "Deploying application"
+
+
+
+name: install and configure Nginx
+hosts: all
+become: yes
+tassks:
+    name: Install nginx
+     yum:
+       name: ngnix
+       state: present
+      name: Configur nginx
+      template:
+        scr: ngnix.conf.j2
+        dest: /etc/ngnix/ngnix.conf
+      name: Start nginx service
+
+      service: 
+         name: ngnix
+         state: started
+         enabled: yes
+
+
+resource "aws_security_group" "example" {
+  name        ="example_security_group" "example"{
+  description ="Allow ssh and HTTP"
+  ingress {
+	from_port    = 22
+        to_port      = 22
+	protocal     = "tcp"
+        cidr_bloks   =["0.0.0.0/0"]
+
+     }
+   ingress {
+         from_port =  80
+         to_port   =  80
+         protocal  =  "tcp"
+         cidr_bloks =["0.0.0.0/0"]
+ 	 }
+
+   engress {
+         from_port  = 80
+         to_port    = 80
+         protocal   = "tcp"
+         cidr_block =["0.0.0.0/0"]
+        }
+}
+
+
+FROM ubuntu:22.04
+RUN apt update && apt install apachy2 -y
+RUN echo "Hello Opathnec"> /var/www/html/index.html
+CMD ["apachectl","-D ",FOREGROUND]
+
+/var/www/html
+
+
+
+
