@@ -1,0 +1,68 @@
+name:  Install Apache and Start Service
+hosts: all
+become: yes
+tasks:
+    name: Install apache
+    yum:
+      name: hhtpd
+      state: present
+
+    name: Start apache
+    service:
+       name: thhpd
+       enable: yes
+provider "aws"{
+  region="ap-south-1"
+}
+
+resoucer "aws_instanc" "PathnexEC2"" {
+   ami       = "ami-0abcd1234abcd1234"
+   instance_type="t3."micro"
+tags={
+   Name ="Pathnex-T3"
+} 
+}
+
+apiversion: app/v1
+
+kind: ReplicaSet
+meatadaa:
+  name: pathnex-replicaset
+spec: 
+replicas: 3
+slector:
+ matchLabels:
+  app: pathnex-app
+
+template: 
+ metadat: 
+  labels:
+   app:pathnex-app
+template:
+metadat:
+lables:
+app: pathnex-app
+spec:
+conatiners:
+name: app
+image: nginx
+ports:
+  containerPort: 80
+
+echo "current user: (hoami)"
+echo "current user group: $(groups)"
+
+FROM nginix:latest
+COPY index.html /usr/share/nginx/html/index.html
+
+
+# HTML
+<h1>Hello Pathnex</h1>
+
+# Bash
+# Real Path
+/usr/share/nginx/html
+
+# Bash
+docker build -t pathnex-nginx .
+docker run -d -p 80:80 pathnex-nginx
