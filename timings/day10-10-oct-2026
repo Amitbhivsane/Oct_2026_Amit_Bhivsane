@@ -1,0 +1,16 @@
+Manual Kubernaties
+installation
+
+two major part of kubernaties
+master nodes
+1 api server
+2 etce
+3 schduler
+4 control manager
+5 cloud control manager
+
+worker nodes
+kubelet
+kube proxi
+cri
+pods
