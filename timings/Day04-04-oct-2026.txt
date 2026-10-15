@@ -1,0 +1,8 @@
+linux command
+wget vs curl
+sed vs awk
+ ram vs swap 
+orphan vs zombie
+cron job
+runlevel vs system target
+shell script variable
