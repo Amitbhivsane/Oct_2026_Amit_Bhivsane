@@ -1,0 +1,139 @@
+name: Configure Auto-healing for web Server
+hosts: all
+become: yes
+tasks: 
+    name: Ensure nginx service is running
+    service:
+       name: nginx
+       state: started
+       enabled: yes
+      name: Setup auto-restart for nginx service
+       lineinfile
+          path: /etc/systemd/system/nginx.service.d/override.config
+          line: "Restart=always"
+          create: yes
+          command: Systemctl demon reload
+
+Teffaform multicode infrastructure with aws and azure
+  
+
+resource "aws_vpc" "main"{
+  cidr_block ="10.0.0.0/16"
+}
+
+resource "azureem_virtual_network" "main"{
+ name: 		=pathnex-vent
+ location 	="East US"
+ address_space  =[10.0.0.0/16]
+resource_group_name=azure_resource_group
+} 		
+
+
+resoucre "aws_instance" "pahtnex-ex2"
+  ami = "ami-nskfnejkfje"
+ region="t2micro"
+region ="us-east-1"
+}
+
+
+resource "azurerm_linx_virtual machine" "pathnex"
+  {
+ 	name: 		="pathnex-azure-vm"
+     	location:	="azure_resoure_group"
+        size		="stander_b1s"
+	admin_username	="mfkd"
+	admin_password	="wdmwidw"
+}
+
+apiversion: app/v1
+kind: Deployment
+metadata:
+    name: pathnex-web-app
+    spec: 
+      replicas: 3
+    selector: 
+      mathchLabels:
+        app: pathnex-web-app
+       template:
+        labels:
+          app: pathnex-web-app
+        spec:
+          container:
+            name: nginx
+            image: nginx
+            ports:
+               continerPort: 80
+            livenessProbe:
+               httpGet:
+                  path: /healhz
+                  port: 80
+                initialDelaySecond: 5
+                 periodSecond: 10
+                
+
+
+pipeline {
+agent any
+environment {
+         IMAGE_NAME ="pathnex-web-app"
+}
+    stages {
+          stage("Build"){
+             steps{
+                  echo "Bulding docker image"
+                  docker.build("${env.IMAGE_NAME}"
+             }
+}
+
+stage("Test"){
+ steps{
+       echo "Running tests..."
+  }
+}
+
+stage("deply to kubernates"){
+  steps{
+      script {
+            sh'kubectl apply -f kubernates'
+            sh 'kubectl rollout status'
+             }
+          }
+      }
+  }
+
+stages:
+    build
+    push
+    deploy
+
+build:    
+   stage:build
+      script:
+      docker build -t pathnex-wen-app
+
+deloy_aws
+   stage: deploy
+   script: 
+      kubectl --contex=aws-cluste apply -f kubernates/deployment.yaml
+ 
+
+deply_azure:
+   stage: deploy
+
+  script: 
+
+      kubctl --- contex-cluster apply -f fuberates/deplyment
+
+
+docker run -d \
+  name parhnex-mysql\
+  MYSQL_ROOT_PAAWORD=root
+   mysql : 8
+
+
+
+
+
+
+
+
