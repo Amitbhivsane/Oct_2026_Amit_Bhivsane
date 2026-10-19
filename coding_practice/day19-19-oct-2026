@@ -1,0 +1,242 @@
+name: install Prometheus for monitoring 
+hosts: all
+become: yes
+tasks: 
+   name: Install Prometheus dependencies
+    yum:
+     name: 
+        Prometheus
+        prometheus-node-exporter
+        states: present
+       name: Start Prometheus service
+       service:
+           name: Prometheus
+           state: started
+           enabled: yes
+
+
+#terraform
+resource "aws-cloudwatch_log_stream" "pathnex_log_stream"{
+  log_group_name  =aws_cloudwatch_log_group.pathnex_log_group.name 
+   name   ="pathnex-log-stream
+}
+
+
+# Kubernetes
+apiVersion: app/v1
+kind: Deployment 
+metadata:
+    name: fluented
+    spec:
+     replicas:2
+     selector:
+      matchLabels:
+         app: fluents
+      template:
+metadata: 
+   labels:
+   app: fluted
+   spec:
+    replicas: 1
+    selector:
+      matchLabels:
+         app:fluend
+      template:
+         metadata:
+      labels:
+        app: fluentd
+      spec:
+       containers:
+           name: fluentd
+           image: fluent/fluentd
+           ports:
+              containerPort: 20224
+
+
+apiVersion: v1
+kind: Service
+metadata: 
+   name: fluented
+ ports:
+     protocol: TCP
+     port: 20224
+
+
+#jenkinsfile
+ 
+
+pipeline {
+agent any
+     stage("Build"){
+       steps{
+            echo "Building Docker Image"
+            docker.build("pathnex-web-app)
+           }
+}
+
+
+stage("Test"){
+    steps{
+         echo "running tests.......""
+         }
+}
+
+stage("Monitor Deployment "){
+     steps{
+       script {
+            sh "kubctl apply -f kubernates//deployment.y"
+            sh "kubectl get pods ---watch"
+           }
+          }
+      }
+     }
+ }
+
+
+#git
+
+ stages:
+    build:
+    push
+    deploy
+
+ 
+build:
+  stage: build
+  script:
+      docker build -t pathnex-web-app
+ 
+push:
+  stage: push
+  script: 
+     docker login -u "$CI_REGISTERY_USER" -p "$CI_REGISTERY_PASSWORD"
+      docker push pathnex-web-app
+
+
+deploy:
+  stage: deploy
+  script: 
+    kubectel appy -f kubernates/deployment.yaml
+    kubectl get pods ---watch
+
+
+from flask import Flast
+     app =Flsk (_name_)
+@app.route("/")
+  def home()
+
+return "Hello pahtnex"
+app.run(host=0.0.0.0,port=5000)
+
+FROM python:3.11
+WORKDIR /otp/pathnex/flask-app
+COPY ./otp/pathnex/flask-app
+RUN pip install flask    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
