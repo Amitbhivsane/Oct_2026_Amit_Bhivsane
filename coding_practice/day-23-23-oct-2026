@@ -1,0 +1,129 @@
+# day-23
+-name: Display Lambda Function Using aws
+ hosts: Deploy Aws Lambda function
+ tasks: 
+    -name: Create Lambda function
+     command: aws lambda create function 
+
+#terraform  api gateway with lambda integration
+
+resource "aws_api_gateway_rest_api" "pathnex_api"{
+  name        ="pahtnex-api"
+  description ="Pathenx_api"
+}
+
+resource "aws_api+lambda_function" "pathnex_lambda"{
+ 
+  function_name ="pathnex-lambda
+  runtime       ="python3.8"
+  role          =aws_iam_roel.lambda_exc_role_arn
+  handler	="lambda_function.lambdat_handler"
+  filename      ="lambda.zip"
+}
+
+resource "aws_api_gateway_intergration""lambda_intergration"{
+  rest_api_id =aws_api_gateway_reat_api.pathnex.id
+  resource_id=aws_api_gateway_resource_id
+  http_methods=aws_api_gateway_method.pathnex_method.http_method
+
+type="aws_PROXY"
+uri =aws_lambda_function.pathnex_lambdat.invoke_Arn
+} 
+
+
+
+#Kubernates
+helm install pathnex-microservice application with lambda
+
+# jenkinsfile
+
+pipeline {
+      agent any 
+        stages {
+            stage("Build"){
+			step{ 
+                         echo "Building lambda function..."
+			 sh "zip -r lambda.zip lamda/"   
+                             }
+                          }
+                stage("Deploy to aws lambda"){
+        		steps{
+                            script{
+                            sh "aws lambda function           
+                      		 }
+                              }  
+                         }		
+		}
+            }
+
+
+
+#git
+
+stages: 
+      -build
+      -deploy
+
+
+build:
+   stage: build
+   script: 
+      -zip -r lambda/
+   deploy:
+     stage: deploy
+      script: 
+          -aws lambda function 
+
+
+
+#docker
+
+FROM maven: 3.9 -eclipse-temurin-17 AsBuilder
+WORKDIR /opt/pathnex/java-build
+COPY ./opt/pathnex/java-build
+RUN mvn clean package
+
+FROM tomcat:9
+WORKDIR /use/local/tomcat/webpage
+WORKDIR /usr/local/tomcat/webapps
+COPY --from=builder /opt/pathnex/java-build/target/*.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+
+# Real Paths
+/opt/pathnex/java-build
+/usr/local/tomcat/webapps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
