@@ -1,0 +1,79 @@
+-name :Deploye docker containers with helm
+hosts: localhost
+  -name: Install helm  
+   command: curl https://row:fnwefnweknew
+   -name: Deploy install pathnex-app 
+    command: helm install pahrnx-app ./microservice-chart
+
+
+    #terraform -multi-model infrastruture with output
+    module "pahrnx-vpc"{
+      socrce ="./vpc"
+    }
+    module "pathnex_instance "{
+      source ="./instance"
+      vpc_id="module.pathnex_vpc.vpc_id"
+    }
+
+    output "ïnstance_id"{
+      value =model.pahrnx_instance.instance.id
+    }
+
+
+    #kubernates helm basef auto scaling deployment
+    apiVersion: apps/v1
+    kind: deployment
+    metadata:
+      name: pathnex-web-app 
+      spec:
+      replicas:3
+      selectot:
+      matchlabeles:
+      labels
+      app: pahrnx-web-appspec:
+       contianers:
+            -name: nginx
+            image:nginx
+            ports:
+            containersPort: 80
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pahnex-web-app
+  apiVersion: app/v1
+  kind: Deployment
+  name: pathnex-web-app
+  minReplica: 2
+  MaxReplica: 10
+  targetCPUUtilizationPercentage: 80
+
+  #jenkinsfiles
+  pipeline{
+    agent any
+    stages{
+       stage("scale up")
+       steps{
+        echo ""scaling up jenkind pipeline"
+       }
+    }
+    stage("Build"){
+      steps{
+        echo"Building project"
+      }
+    }
+    stage("Deploy")
+    steps {
+      echo "deploying project"
+    }
+  }
+
+}
+}
+
+
+# docker
+FROM nginx
+HEAL THCHECKER CMD 
+}
+
