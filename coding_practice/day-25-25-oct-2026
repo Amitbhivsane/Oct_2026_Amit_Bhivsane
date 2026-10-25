@@ -1,0 +1,125 @@
+-name: Setup prometheus node exporter
+hosts: all
+become: yes
+tasks: 
+   -name: Install prometheus node exporter
+   yum:
+    -name:prometheus-node-exporter
+     state: present
+    -name: state-node-exporter
+    state: started
+    enabled: yes
+    # 
+# Terraform -create cloudwatch
+resource "aws_cloudwatch_metric_alaram" "pahtnex_cpu_alaram"{
+alarm_name     ="pathnex-cpu-utilization"
+comparison_operator="GreaterthanThereshold"
+evalustion_periods ="1"
+metric_name     ="cpuutilazation
+namespace  ="aws/ec2"
+period   ="60"
+stasticstic  "average"
+dimensions{
+InstancId=aws_instance.pathnex
+}
+alarm_actions=[aws_sns_topic.pathnex_alert.arn]
+}
+
+
+resource "aws_sns_topic" "pathnex_alerts" {
+  name = "pathnex-alerts"
+}
+
+
+
+# kubernetes
+
+apiVersion: app.v1
+kind: Deployment
+metadta:
+  name: prometheus
+  spec:
+  replicas: 1
+  selector:
+  matchLabels:
+  app:prometheus
+  template:
+  metadata:
+    Labels:
+    app:prometheus
+    spec:
+    containers:
+    -name: prometheus
+    image: prom/prometheus:latest
+    ports:
+          -containerPort: 9090
+
+
+
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: grafana
+  spec: 
+  replicas: 1
+  matchLabels: 
+  app: grafana
+  template:
+  metadata:
+  Labels:
+  app:grafana
+  spec: 
+  containers:
+  -name: grafana
+  image: grafana.grafana:latest
+  ports: 
+  containerPort: 300
+
+
+
+  # pipeline
+  pipeline{
+  agent any
+  stages{
+    stage("Monitor")
+    Steps{
+    script {
+     echo "cloud watch alarm_actions"
+     sh "aws cloudwatch put-metrics"
+    }
+    }
+  }
+
+  stage ("test"){
+  Steps{
+  
+  echo {
+   echo  "running"
+  }
+  }
+  }
+  }
+
+
+# Git Lab
+
+stages: 
+  -monitor:
+  -test
+monitor:
+ stage:monitor
+ script:
+  -aws cloudwatch
+
+  test:
+    stage: test
+    script:
+     echo "Running test"
+
+
+    #Docker
+
+    node_moduels
+    .git
+    temp  
+
