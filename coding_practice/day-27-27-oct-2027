@@ -1,0 +1,80 @@
+#anisible lambda function
+
+-name: Deploy serverless Lambda function
+hosts: localhost
+tasks: 
+    -name: Create lambda function
+     command: aws lambda create-function
+
+# terraform "aws_dyanmaid_table" "pathnex_table" {
+     name":  	="pathnex-table"
+     hash_key   ="id"
+     billing_mode="pay_per_request"
+     attribute{
+ 		
+       name: ="id"
+       type ="5"
+ }
+
+}
+
+
+#kubernates 
+apiVersion: kubeless.io/v1beta1
+kind: Function
+metadata:
+   name: pathnex-lambda
+   namespace: index.handler
+    function: |
+       module.exports =function(event,context) {
+                 contex.succed("hello world")
+};
+
+
+#pipeline
+{
+  aagent any 
+    stages {
+       stage ("Build"){
+         step {
+               echo "Building Lambda function"
+               sh "zip -r lambda.zip/"
+            }
+           }
+
+
+ stage("Deploy to lambda"){
+        step {
+            script {
+             sh "aws lambda update-functipn-code"
+          }
+       }
+    }
+  }
+}
+
+
+
+
+
+
+#docker
+docker run -d --memory ="512m" --cpus ="1.0" nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
