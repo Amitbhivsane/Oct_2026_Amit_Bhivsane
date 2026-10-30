@@ -1,0 +1,63 @@
+# ansible
+name: setup vpc peering between accounts
+-name: setup VPC peering Between Accounts
+ hosts: localhost
+ tasks:
+     -name: Create VPC peering connection
+      command: aws e2 creat-vpc-connection 
+
+#terrafrom
+
+resource "aws_vpc_peering_coonection" "pathnex_peering"{
+   vpc_id =aws_vpc.pathnex.id
+   peer_vpc_id=aws_vpc.peer_vpc.id
+}
+
+resource "aws_rout" "pathnex_route"{
+  route_table_id =Aws_route_table.pathnex_rt.id
+  destination_cidr_block ="10.10.0.0/16"
+  vpc_peering_connection_id=Aws_vpc_peering_connection.pathnex_peering.id
+ }
+
+
+#Kubernates 
+apiVersion: networking/k8s.io/v1
+kind: NewworkPolicy
+metadta: 
+  name: pathnex-vpc-policy
+  spec:
+    podSelector:
+       matchlabels:
+        app: pathnex-app
+    ingress:
+       -from:
+          -podSelector:
+            matchLabels:
+              app: pathnex-db
+
+#docker
+
+docker save -o pathnex-nginx.tat pathnex-nginx
+
+docker load -i pathnex-nginx.tar
+
+#bash
+docker run --rm -v pathnex-volume:/data -v $(pws):/backup ubuntu tar czf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
